@@ -13,13 +13,23 @@ TEMPLATE = app
 SOURCES += main.cpp       \
            mainwindow.cpp \
            histogram.cpp  \
-           db.cpp
+           db.cpp \
+    abstracthistcomparer.cpp \
+    manhatanhistcomparer.cpp
 
 HEADERS  += mainwindow.h \
             histogram.h  \
-            db.h
+            db.h \
+    abstracthistcomparer.h \
+    manhatanhistcomparer.h \
+    comparers.h
 
 FORMS    += mainwindow.ui
+
+
+
+
+
 
 
 

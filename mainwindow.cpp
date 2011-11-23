@@ -1,6 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+#include <QList>
 #include <QFileDialog>
+#include <QStringList>
+#include <QStringListModel>
+#include <QPixmap>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,24 +19,23 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     catch (const char* ex)
     {
-        db = NULL;
+        this->~MainWindow();
+
         qDebug(ex);
+
+        exit(1);
     }
 
-    if (db)
-    {
-        QStringList* dirList = db->getDirList();
-        if (dirList->count() > 0)
-        {
-            ui->listWidget->addItems(*dirList);
-        }
-    }
+    scene = new QGraphicsScene();
+    ui->image_preview->setScene(scene);
 }
 
 MainWindow::~MainWindow()
 {
     delete db;
+    delete hi;
     delete ui;
+    delete scene;
 }
 
 void MainWindow::addDirectory()
@@ -47,11 +51,36 @@ void MainWindow::removeDirectory()
 
 void MainWindow::createCollection()
 {
-    QList<QString> list;
+    QStringList list;
     for (int i = 0; i < ui->listWidget->count(); i++)
     {
-        list.push_back(ui->listWidget->item(i)->text());
+        list << ui->listWidget->item(i)->text();
     }
 
-    hi->createCollection(db, list);
+    hi->createCollection(db, &list);
+    QStringList files = db->getFiles();
+    QStringListModel* files_model = new QStringListModel();
+    files_model->setStringList(files);
+
+    ui->list_pictures->setModel(files_model);
+}
+
+void MainWindow::on_list_pictures_clicked(const QModelIndex &index)
+{
+    QString s = index.data().toString();
+    QPixmap qpx = QPixmap(s).scaled(ui->image_preview->size(), Qt::KeepAspectRatio);
+
+    scene->clear();
+    scene->addPixmap(qpx);
+
+    ui->image_preview->show();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    // this method compares histograms and shows 5 most similar to our main image
+    // 1. get selected image index -> histogram
+    // 2. compare to other images histograms by method selected in combobox
+    // 3. sort from smallest to greatest
+    // 4. show top 5
 }

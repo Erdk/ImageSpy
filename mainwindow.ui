@@ -6,76 +6,101 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>290</width>
-    <height>378</height>
+    <width>830</width>
+    <height>466</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>291</width>
-      <height>351</height>
+      <width>209</width>
+      <height>441</height>
      </rect>
     </property>
-    <property name="currentIndex">
-     <number>0</number>
-    </property>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>ImageSpy</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>Katalogi</string>
-     </attribute>
-     <widget class="QWidget" name="">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>281</width>
-        <height>311</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetMaximumSize</enum>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
+     <item>
+      <widget class="QListWidget" name="listWidget">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::MultiSelection</enum>
        </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QListWidget" name="listWidget">
-         <property name="selectionMode">
-          <enum>QAbstractItemView::MultiSelection</enum>
+        <widget class="QPushButton" name="addDir">
+         <property name="text">
+          <string>Dodaj katalog</string>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QPushButton" name="addDir">
-           <property name="text">
-            <string>Dodaj katalog</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="rmDir">
-           <property name="text">
-            <string>Usuń katalog</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QPushButton" name="rmDir">
+         <property name="text">
+          <string>Usuń katalog</string>
+         </property>
+        </widget>
        </item>
       </layout>
-     </widget>
-    </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>0</y>
+      <width>241</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QListView" name="list_pictures"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QComboBox" name="comboBox">
+         <item>
+          <property name="text">
+           <string>Manhatan</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>Szukaj</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QListView" name="list_similar"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QGraphicsView" name="image_preview">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>0</y>
+      <width>381</width>
+      <height>441</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -83,8 +108,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>290</width>
-     <height>23</height>
+     <width>830</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuPlik">
@@ -127,38 +152,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>addDir</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addDirectory()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>74</x>
-     <y>313</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>144</x>
-     <y>188</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rmDir</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>removeDirectory()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>214</x>
-     <y>313</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>144</x>
-     <y>188</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionBuduj_kolekcj</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -171,6 +164,38 @@
     <hint type="destinationlabel">
      <x>144</x>
      <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addDir</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addDirectory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>52</x>
+     <y>451</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>414</x>
+     <y>232</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rmDir</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeDirectory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>159</x>
+     <y>451</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>414</x>
+     <y>232</y>
     </hint>
    </hints>
   </connection>
