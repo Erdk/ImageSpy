@@ -24,6 +24,7 @@ private:
     DB* db;
     Histogram* hi;
     QGraphicsScene* scene;
+    QGraphicsScene* scenePreview;
     Ui::MainWindow *ui;
 
 private slots:
@@ -33,6 +34,7 @@ private slots:
     void createCollection();
     void on_list_pictures_clicked(const QModelIndex &index);
     void on_pushButton_clicked();
+    void on_list_similar_clicked(const QModelIndex &index);
 };
 
 #endif // MAINWINDOW_H

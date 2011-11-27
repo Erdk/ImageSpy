@@ -2,6 +2,8 @@
 #define HISTOGRAM_H
 
 #include "db.h"
+#include "comparers.h"
+
 #include <QStringList>
 
 class Histogram
@@ -17,8 +19,9 @@ public:
 
     void doHistogram();
 
-    QVector<QString> compareHistograms (QString orig_filename, uint* hist_orig, uint dimmension,
-                                        QVector< uint* > histograms, QStringList filenames, QString comparer);
+    QStringList compareHistograms (hist_tuple* orig_hist,
+                                   QVector< hist_tuple* >* histograms,
+                                   AbstractHistComparer* comp);
 };
 
 #endif // HISTOGRAM_H

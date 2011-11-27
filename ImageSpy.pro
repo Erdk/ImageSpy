@@ -10,21 +10,23 @@ TARGET = ImageSpy
 TEMPLATE = app
 
 
-SOURCES += main.cpp       \
-           mainwindow.cpp \
-           histogram.cpp  \
-           db.cpp \
-    abstracthistcomparer.cpp \
-    manhatanhistcomparer.cpp
+SOURCES  += main.cpp                    \
+            mainwindow.cpp              \
+            histogram.cpp               \
+            db.cpp \
+    mhn_comparer.cpp
 
-HEADERS  += mainwindow.h \
-            histogram.h  \
-            db.h \
-    abstracthistcomparer.h \
-    manhatanhistcomparer.h \
-    comparers.h
+HEADERS  += mainwindow.h                \
+            histogram.h                 \
+            db.h                        \
+            comparers.h
 
 FORMS    += mainwindow.ui
+
+
+
+
+
 
 
 

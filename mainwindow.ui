@@ -14,6 +14,9 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
@@ -23,7 +26,7 @@
       <height>441</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="dirLists">
      <property name="sizeConstraint">
       <enum>QLayout::SetMaximumSize</enum>
      </property>
@@ -63,7 +66,10 @@
       <height>441</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="imageLists">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
      <item>
       <widget class="QListView" name="list_pictures"/>
      </item>
@@ -92,7 +98,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QGraphicsView" name="image_preview">
+   <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
       <x>450</x>
@@ -101,6 +107,17 @@
       <height>441</height>
      </rect>
     </property>
+    <layout class="QVBoxLayout" name="imagePreviews">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
+     <item>
+      <widget class="QGraphicsView" name="image_preview"/>
+     </item>
+     <item>
+      <widget class="QGraphicsView" name="similarPreview"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
