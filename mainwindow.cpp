@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QObject>
 #include <QList>
 #include <QFileDialog>
 #include <QStringList>
@@ -11,8 +12,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     hi(new Histogram),
-    selected_method(0),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    selected_method(0)
 {
     ui->setupUi(this);
     try
@@ -31,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new QGraphicsScene();
     scenePreview = new QGraphicsScene();
 
-    ui->image_preview->setScene(scene);
+    ui->imagePreview->setScene(scene);
     ui->similarPreview->setScene(scenePreview);
 }
 
@@ -53,6 +54,7 @@ void MainWindow::addDirectory()
 void MainWindow::removeDirectory()
 {
     qDeleteAll(ui->folderList->selectedItems());
+    createCollection();
 }
 
 void MainWindow::createCollection()
@@ -68,21 +70,21 @@ void MainWindow::createCollection()
     QStringListModel* files_model = new QStringListModel();
     files_model->setStringList(files);
 
-    ui->list_pictures->setModel(files_model);
+    ui->pictureList->setModel(files_model);
 }
 
-void MainWindow::on_list_pictures_clicked(const QModelIndex &index)
+void MainWindow::on_pictureList_clicked(const QModelIndex &index)
 {
     QString s = index.data().toString();
-    QPixmap qpx = QPixmap(s).scaled(ui->image_preview->size(), Qt::KeepAspectRatio);
+    QPixmap qpx = QPixmap(s).scaled(ui->imagePreview->size(), Qt::KeepAspectRatio);
 
     scene->clear();
     scene->addPixmap(qpx);
 
-    ui->image_preview->show();
+    ui->imagePreview->show();
 }
 
-void MainWindow::on_list_similar_clicked(const QModelIndex &index)
+void MainWindow::on_similarPictureList_clicked(const QModelIndex &index)
 {
     QString s = index.data().toString();
     QPixmap qpx = QPixmap(s).scaled(ui->similarPreview->size(), Qt::KeepAspectRatio);
@@ -103,7 +105,6 @@ void MainWindow::on_searchButton_clicked()
 
     AbstractHistComparer* ahc;
 
-    qDebug(ui->methodList->itemText(selected_method).toAscii());
     switch(selected_method)
     {
     case 0:
@@ -120,10 +121,10 @@ void MainWindow::on_searchButton_clicked()
         break;
     }
 
-    QItemSelectionModel* qism = ui->list_pictures->selectionModel();
+    QItemSelectionModel* qism = ui->pictureList->selectionModel();
     int row = qism->currentIndex().row();
 
-    if (row > 0)
+    if (row >= 0)
     {
         QStringList r = hi->compareHistograms(db->getHistogram(row),
                                               db->getHistograms(),
@@ -131,21 +132,12 @@ void MainWindow::on_searchButton_clicked()
         QStringListModel* ret_model = new QStringListModel();
         ret_model->setStringList(r);
 
-        QItemSelectionModel *m = ui->list_similar->selectionModel();
-        ui->list_similar->setModel(ret_model);
+        QItemSelectionModel *m = ui->similarPictureList->selectionModel();
+        ui->similarPictureList->setModel(ret_model);
         if (m != NULL)
         {
             delete m;
         }
-
-        // updateing filelist
-        QStringList files = db->getFiles();
-        QStringListModel* files_model = new QStringListModel();
-        files_model->setStringList(files);
-
-        m = ui->list_pictures->selectionModel();
-        ui->list_pictures->setModel(files_model);
-        delete m;
     }
 
     delete ahc;

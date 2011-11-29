@@ -45,20 +45,27 @@
          <enum>QLayout::SetFixedSize</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="addDir">
+         <widget class="QPushButton" name="addFolder">
           <property name="text">
            <string>Dodaj katalog</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="rmDir">
+         <widget class="QPushButton" name="rmFolder">
           <property name="text">
            <string>Usuń katalog</string>
           </property>
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="createCollectionButton">
+        <property name="text">
+         <string>Stwórz kolekcję</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -68,7 +75,7 @@
        <enum>QLayout::SetFixedSize</enum>
       </property>
       <item>
-       <widget class="QListView" name="list_pictures"/>
+       <widget class="QListView" name="pictureList"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -106,7 +113,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QListView" name="list_similar"/>
+       <widget class="QListView" name="similarPictureList"/>
       </item>
      </layout>
     </item>
@@ -116,7 +123,7 @@
        <enum>QLayout::SetMaximumSize</enum>
       </property>
       <item>
-       <widget class="QGraphicsView" name="image_preview"/>
+       <widget class="QGraphicsView" name="imagePreview"/>
       </item>
       <item>
        <widget class="QGraphicsView" name="similarPreview"/>
@@ -190,7 +197,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>addDir</sender>
+   <sender>addFolder</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>addDirectory()</slot>
@@ -206,7 +213,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>rmDir</sender>
+   <sender>rmFolder</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>removeDirectory()</slot>
@@ -214,6 +221,22 @@
     <hint type="sourcelabel">
      <x>159</x>
      <y>451</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>414</x>
+     <y>232</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>createCollectionButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>createCollection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>142</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel">
      <x>414</x>

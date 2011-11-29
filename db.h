@@ -20,6 +20,7 @@ public:
 
     void setRecord(QString baseDir, QString fileName, uint* table, uint dimmensions);
 
+    void init() { this->~DB(); histograms =  new QVector< hist_tuple* >(); }
     QStringList getFiles() const;
     hist_tuple* getHistogram(uint index) const { return histograms->at(index); }
     QVector< hist_tuple* >* getHistograms() const { return histograms; }

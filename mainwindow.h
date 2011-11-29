@@ -21,11 +21,11 @@ public:
     ~MainWindow();
 
 private:
-    DB* db;
-    Histogram* hi;
+    DB*             db;
+    Histogram*      hi;
     QGraphicsScene* scene;
     QGraphicsScene* scenePreview;
-    Ui::MainWindow *ui;
+    Ui::MainWindow* ui;
 
     uint selected_method;
 
@@ -34,9 +34,9 @@ private slots:
     void removeDirectory();
 
     void createCollection();
-    void on_list_pictures_clicked(const QModelIndex &index);
+    void on_pictureList_clicked(const QModelIndex &index);
     void on_searchButton_clicked();
-    void on_list_similar_clicked(const QModelIndex &index);
+    void on_similarPictureList_clicked(const QModelIndex &index);
     void on_methodList_currentIndexChanged(int index);
 };
 

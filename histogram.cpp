@@ -31,13 +31,6 @@ void Histogram::createCollection(DB* db, QStringList* dirs)
 
         foreach (QFileInfo fi, fileInfo)
         {
-//            std::cerr << __FILE__
-//                      << ":"
-//                      << __LINE__
-//                      << " "
-//                      << fi.fileName().toStdString()
-//                      << std::endl;
-
             uint* histogram;
             histogram = (uint*) malloc (colorLevels * colorLevels *
                                         colorLevels * sizeof(uint));
@@ -77,28 +70,6 @@ void Histogram::createCollection(DB* db, QStringList* dirs)
                       b) += 1;
                 }
             }
-
-//            for (uint i = 0; i < colorLevels; i++)
-//            {
-//                for (uint j = 0; j < colorLevels; j++)
-//                {
-//                    for (uint k = 0; k < colorLevels; k++)
-//                        std::cerr << "[" << i
-//                                  << ":" << j
-//                                  << ":" << k
-//                                  << "](" << *(histogram +
-//                                               i * colorLevels * colorLevels +
-//                                               j * colorLevels +
-//                                               k)
-//                                  << ") ";
-//                    std::cerr << std::endl;
-
-//                        *(histogram +
-//                          i * colorLevels * colorLevels +
-//                          j * colorLevels +
-//                          k) *= (262144 / (height * width));
-//                }
-//            }
 
             // TODO: create optimised histogram and store in db
             db->setRecord(fi.absolutePath(),
@@ -149,6 +120,8 @@ QStringList Histogram::compareHistograms(hist_tuple* orig_hist,
         }
     }
 
+    QVector< hist_tuple* >* histograms_copy = new QVector< hist_tuple* >(histograms->count());
+    qCopy(histograms->begin(), histograms->end(), histograms_copy->begin());
     qSort(histograms->begin(), histograms->end(), sortHistTuples);
 
     for (int i = 1; i < 6 && i < histograms->size(); i++)
@@ -156,5 +129,7 @@ QStringList Histogram::compareHistograms(hist_tuple* orig_hist,
         ret << histograms->at(i)->filename;
     }
 
+    qCopy(histograms_copy->begin(), histograms_copy->end(), histograms->begin());
+    delete histograms_copy;
     return ret;
 }
