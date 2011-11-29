@@ -140,8 +140,8 @@ QStringList Histogram::compareHistograms(hist_tuple* orig_hist,
                 }
             }
 
-           // u->distance = (*comp)(orig_hist->histogram, u->histogram, u->dimmension);
-            u->distance = ret;
+            u->distance = (*comp)(orig_hist, u);
+            //u->distance = ret;
         }
         else
         {

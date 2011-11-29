@@ -27,14 +27,17 @@ private:
     QGraphicsScene* scenePreview;
     Ui::MainWindow *ui;
 
+    uint selected_method;
+
 private slots:
     void addDirectory();
     void removeDirectory();
 
     void createCollection();
     void on_list_pictures_clicked(const QModelIndex &index);
-    void on_pushButton_clicked();
+    void on_searchButton_clicked();
     void on_list_similar_clicked(const QModelIndex &index);
+    void on_methodList_currentIndexChanged(int index);
 };
 
 #endif // MAINWINDOW_H

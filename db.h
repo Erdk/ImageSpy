@@ -1,32 +1,11 @@
 #ifndef DB_H
 #define DB_H
 
-#include <QList>
 #include <QString>
-#include <QVariant>
+#include <QVector>
 #include <QStringList>
 
-#include <QVector>
-
-#include <cstdlib>
-
-struct hist_tuple
-{
-    QString filename;
-    uint* histogram;
-    uint dimmension;
-    uint distance;
-
-    hist_tuple(QString fn, uint* h, uint dim, uint dist = 0) :
-        filename(fn),
-        histogram(h),
-        dimmension(dim),
-        distance(dist)
-    { }
-
-    void setVar(uint i, uint j, uint k, uint var);
-    uint getVar(uint i, uint j, uint k) const;
-};
+#include "hist_tuple.h"
 
 class DB
 {

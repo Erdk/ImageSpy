@@ -4,7 +4,7 @@
 #include "db.h"
 #include "comparers.h"
 
-#include <QStringList>
+#include <QImage>
 
 class Histogram
 {

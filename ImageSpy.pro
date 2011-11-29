@@ -14,14 +14,20 @@ SOURCES  += main.cpp                    \
             mainwindow.cpp              \
             histogram.cpp               \
             db.cpp \
-    mhn_comparer.cpp
+    hist_tuple.cpp \
+    comparers.cpp
 
 HEADERS  += mainwindow.h                \
             histogram.h                 \
             db.h                        \
-            comparers.h
+            comparers.h \
+    hist_tuple.h
 
 FORMS    += mainwindow.ui
+
+
+
+
 
 
 

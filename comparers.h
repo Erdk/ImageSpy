@@ -1,20 +1,42 @@
 #ifndef COMPARERS_H
 #define COMPARERS_H
 
-typedef unsigned int uint;
+#include "hist_tuple.h"
 
 class AbstractHistComparer
 {
 public:
-    virtual uint operator ()(uint* h1, uint* h2, uint dimm) = 0;
+    virtual uint operator ()(hist_tuple* h1, hist_tuple* h2) = 0;
 };
-
-#include <QString>
 
 class ManhatanHistComparer : public AbstractHistComparer
 {
 public:
-    uint operator ()(uint* h1, uint* h2, uint dimm);
+    uint operator ()(hist_tuple* h1, hist_tuple* h2);
+};
+
+class EuklidesHistComparer : public AbstractHistComparer
+{
+public:
+    uint operator ()(hist_tuple* h1, hist_tuple* h2);
+};
+
+class CosinusHistComparer : public AbstractHistComparer
+{
+public:
+    uint operator ()(hist_tuple* h1, hist_tuple* h2);
+};
+
+class CrossSectionHistComparer : public AbstractHistComparer
+{
+public:
+    uint operator ()(hist_tuple* h1, hist_tuple* h2);
+};
+
+class NormCorrelationHistComparer : public AbstractHistComparer
+{
+public:
+    uint operator ()(hist_tuple* h1, hist_tuple* h2);
 };
 
 
