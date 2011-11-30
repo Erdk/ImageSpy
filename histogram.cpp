@@ -109,23 +109,7 @@ QVector< int > Histogram::compareHistograms(image_record* orig_hist,
     {
         if (orig_hist != u)
         {
-            uint ret = 0;
-            uint dimm = u->dimmension;
-            for (uint i = 0; i < dimm; i++)
-            {
-                for (uint j = 0; j < dimm; j++)
-                {
-                    for (uint k = 0; k < dimm; k++)
-                    {
-                        uint a = orig_hist->getVar(i, j, k);
-                        uint b = u->getVar(i, j, k);
-                        ret += std::abs((int)(a - b));
-                    }
-                }
-            }
-
             u->distance = (*comp)(orig_hist, u);
-            //u->distance = ret;
         }
         else
         {

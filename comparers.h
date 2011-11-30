@@ -39,5 +39,28 @@ public:
     uint operator ()(image_record* h1, image_record* h2);
 };
 
+class MediumLumaHistComparer : public AbstractHistComparer
+{
+public:
+    uint operator ()(image_record* h1, image_record* h2);
+};
+
+class VarianceHistComparer : public AbstractHistComparer
+{
+public:
+    uint operator ()(image_record* h1, image_record* h2);
+};
+
+class JeffreyHistComparer : public AbstractHistComparer
+{
+public:
+    uint operator ()(image_record* h1, image_record* h2);
+};
+
+class KullbackHistComparer : public AbstractHistComparer
+{
+public:
+    uint operator ()(image_record* h1, image_record* h2);
+};
 
 #endif // COMPARERS_H

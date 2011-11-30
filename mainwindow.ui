@@ -101,6 +101,26 @@
             <string>Korelacja wzajemna</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Średnia jasność</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Wariancja</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Jeffrey</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Kullback</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item>

@@ -131,6 +131,18 @@ void MainWindow::on_searchButton_clicked()
     case 3:
         ahc = new NormCorrelationHistComparer();
         break;
+    case 4:
+        ahc = new MediumLumaHistComparer();
+        break;
+    case 5:
+        ahc = new VarianceHistComparer();
+        break;
+    case 6:
+        ahc = new JeffreyHistComparer();
+        break;
+    case 7:
+        ahc = new KullbackHistComparer();
+        break;
     }
 
     QItemSelectionModel* qism = ui->pictureList->selectionModel();
