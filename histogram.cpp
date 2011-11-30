@@ -91,7 +91,7 @@ void Histogram::createCollection(DB* db, QStringList* dirs)
 }
 
 // helper function for comparing histograms distances
-bool sortHistTuples(const image_record* s1, const image_record* s2)
+bool sortImageRecords(const image_record* s1, const image_record* s2)
 {
     return s1->distance < s2->distance;
 }
@@ -99,8 +99,8 @@ bool sortHistTuples(const image_record* s1, const image_record* s2)
 // comparing histograms using chosen method (child of AbstractHistComparer
 // and return list of most similar
 QVector< int > Histogram::compareHistograms(image_record* orig_hist,
-                                         QVector< image_record* >* histograms,
-                                         AbstractHistComparer* comp)
+                                            QVector< image_record* >* histograms,
+                                            AbstractHistComparer* comp)
 {
     // vector of filenames to return
     QVector< int > ret;
@@ -119,9 +119,9 @@ QVector< int > Histogram::compareHistograms(image_record* orig_hist,
 
     QVector< image_record* >* histograms_copy = new QVector< image_record* >(histograms->count());
     qCopy(histograms->begin(), histograms->end(), histograms_copy->begin());
-    qSort(histograms->begin(), histograms->end(), sortHistTuples);
+    qSort(histograms->begin(), histograms->end(), sortImageRecords);
 
-    for (int i = 1; i < 6 && i < histograms->size(); i++)
+    for (int i = 0; i < 6 && i < histograms->size(); i++)
     {       
         ret << histograms_copy->indexOf(histograms->at(i));
     }

@@ -14,11 +14,7 @@ private:
 
 public:
     Histogram();
-
     void createCollection(DB* db, QStringList* dirs);
-
-    void doHistogram();
-
     QVector< int > compareHistograms (image_record* orig_hist,
                                       QVector< image_record* >* histograms,
                                       AbstractHistComparer* comp);

@@ -63,4 +63,10 @@ public:
     uint operator ()(image_record* h1, image_record* h2);
 };
 
+class ChiHistComparer : public AbstractHistComparer
+{
+public:
+    uint operator ()(image_record* h1, image_record* h2);
+};
+
 #endif // COMPARERS_H

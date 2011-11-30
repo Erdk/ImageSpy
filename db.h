@@ -12,8 +12,8 @@
 class DB
 {
 private:
-    QSqlDatabase db;
-    QStringList dirs;
+    QSqlDatabase              db;
+    QStringList               dirs;
     QVector< image_record* >* histograms;
 
 public:

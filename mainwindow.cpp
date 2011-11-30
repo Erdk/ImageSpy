@@ -143,6 +143,9 @@ void MainWindow::on_searchButton_clicked()
     case 7:
         ahc = new KullbackHistComparer();
         break;
+    case 8:
+        ahc = new ChiHistComparer();
+        break;
     }
 
     QItemSelectionModel* qism = ui->pictureList->selectionModel();

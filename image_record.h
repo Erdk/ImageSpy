@@ -5,18 +5,18 @@
 
 enum ImageState
 {
-    INDB,
-    NOTINDB,
-    INVALID
+    INDB,    // there's image's histogram in database ready to be fetched
+    NOTINDB, // no trace of image at all
+    INVALID  // image in invalid state, don't do anything
 };
 
 struct image_record
 {
     QString filename;
     QString basedir;
-    uint* histogram;
-    uint dimmension;
-    uint distance;
+    uint*   histogram;
+    uint    dimmension;
+    uint    distance;
 
     image_record(QString fn, QString bd, uint* h, uint dim, uint dist = 0) :
         filename(fn),
