@@ -47,7 +47,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::addDirectory()
 {
-    QString fileName = QFileDialog::getExistingDirectory(this, "Wybierz katalog", "/home/erdk");
+    QString fileName = QFileDialog::getExistingDirectory(this, "Wybierz katalog", QDir::homePath());
     ui->folderList->addItem(new QListWidgetItem(fileName));
 }
 
@@ -55,6 +55,11 @@ void MainWindow::removeDirectory()
 {
     qDeleteAll(ui->folderList->selectedItems());
     createCollection();
+
+    scene->clear();
+    scenePreview->clear();
+
+    ui->similarPictureList->setModel(NULL);
 }
 
 void MainWindow::createCollection()
@@ -73,9 +78,12 @@ void MainWindow::createCollection()
     ui->pictureList->setModel(files_model);
 }
 
+// action which show image in preview area
 void MainWindow::on_pictureList_clicked(const QModelIndex &index)
 {
-    QString s = index.data().toString();
+    image_record* ir = db->getHistogram(index.row());
+    QString s = ir->basedir + "/" + ir->filename;
+    s = QDir::toNativeSeparators(s);
     QPixmap qpx = QPixmap(s).scaled(ui->imagePreview->size(), Qt::KeepAspectRatio);
 
     scene->clear();
@@ -84,9 +92,13 @@ void MainWindow::on_pictureList_clicked(const QModelIndex &index)
     ui->imagePreview->show();
 }
 
+// action which show image in similar preview area
+// BUG: figure out hiding additional info in model and presenting it by
+// widget
+// for now: dirty hack
 void MainWindow::on_similarPictureList_clicked(const QModelIndex &index)
 {
-    QString s = index.data().toString();
+    QString s = QDir::toNativeSeparators(index.data().toString());
     QPixmap qpx = QPixmap(s).scaled(ui->similarPreview->size(), Qt::KeepAspectRatio);
 
     scenePreview->clear();
@@ -126,11 +138,19 @@ void MainWindow::on_searchButton_clicked()
 
     if (row >= 0)
     {
-        QStringList r = hi->compareHistograms(db->getHistogram(row),
-                                              db->getHistograms(),
-                                              ahc);
+        QVector<int> r = hi->compareHistograms(db->getHistogram(row),
+                                               db->getHistograms(),
+                                               ahc);
+        QStringList qsl;
+        for (int i = 0; i < r.count(); i++)
+        {
+            image_record* ir = db->getHistogram(r.at(i));
+            qsl << QString("%1/%2").arg(ir->basedir).arg(ir->filename);
+        }
+
+
         QStringListModel* ret_model = new QStringListModel();
-        ret_model->setStringList(r);
+        ret_model->setStringList(qsl);
 
         QItemSelectionModel *m = ui->similarPictureList->selectionModel();
         ui->similarPictureList->setModel(ret_model);

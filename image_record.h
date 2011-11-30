@@ -3,15 +3,24 @@
 
 #include <QString>
 
-struct hist_tuple
+enum ImageState
+{
+    INDB,
+    NOTINDB,
+    INVALID
+};
+
+struct image_record
 {
     QString filename;
+    QString basedir;
     uint* histogram;
     uint dimmension;
     uint distance;
 
-    hist_tuple(QString fn, uint* h, uint dim, uint dist = 0) :
+    image_record(QString fn, QString bd, uint* h, uint dim, uint dist = 0) :
         filename(fn),
+        basedir(bd),
         histogram(h),
         dimmension(dim),
         distance(dist)

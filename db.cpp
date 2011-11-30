@@ -11,9 +11,14 @@
 #include <QStringList>
 #include <QVectorIterator>
 
+DB::DB() : histograms(new QVector< image_record* >())
+{
+
+}
+
 DB::~DB()
 {
-    foreach (hist_tuple* h, *histograms)
+    foreach (image_record* h, *histograms)
     {
         free(h);
     }
@@ -23,7 +28,7 @@ DB::~DB()
 
 void DB::setRecord(QString baseDir, QString fileName, uint* table, uint dimmensions)
 {
-    hist_tuple* h = new hist_tuple(QString(baseDir + "/" + fileName), table, dimmensions);
+    image_record* h = new image_record(fileName, baseDir, table, dimmensions);
     histograms->append(h);
 
     if (!dirs.contains(baseDir))
@@ -32,14 +37,45 @@ void DB::setRecord(QString baseDir, QString fileName, uint* table, uint dimmensi
     }
 }
 
+// TODO: stub
+image_record* DB::getRecord(QString baseDir, QString fileName)
+{
+    return NULL;
+}
+
 QStringList DB::getFiles() const
 {
     QStringList ret;
-    QVector< hist_tuple* >::iterator i;
+    QVector< image_record* >::iterator i;
     for (i = histograms->begin(); i != histograms->end(); ++i)
     {
         ret << (*i)->filename;
     }
 
     return ret;
+}
+
+// function checking whetaher we've got image in database and it's baseDir
+// is in current diretories list
+// TODO: stub
+ImageState DB::checkImageState(QString filename, QString baseDir)
+{
+    foreach (image_record* i, *histograms)
+    {
+        if (i->filename.compare(filename) == 0 && i->basedir.compare(baseDir) == 0)
+            return INDB;
+    }
+
+    return NOTINDB;
+}
+
+void DB::cleanHistogramList(QStringList *validDirs)
+{
+    for (int i = histograms->count() - 1; i >= 0; i--)
+    {
+        if (!validDirs->contains(histograms->at(i)->basedir))
+        {
+            histograms->remove(i);
+        }
+    }
 }

@@ -5,25 +5,36 @@
 #include <QVector>
 #include <QStringList>
 
-#include "hist_tuple.h"
+#include <QSqlDatabase>
+
+#include "image_record.h"
 
 class DB
 {
 private:
+    QSqlDatabase db;
     QStringList dirs;
-    QVector< hist_tuple* >* histograms;
+    QVector< image_record* >* histograms;
 
 public:
-    DB() : histograms(new QVector< hist_tuple* >())
-    { }
+    DB();
     ~DB();
 
+    // for Histogram to access Images database
     void setRecord(QString baseDir, QString fileName, uint* table, uint dimmensions);
+    image_record* getRecord(QString baseDir, QString fileName);
 
-    void init() { this->~DB(); histograms =  new QVector< hist_tuple* >(); }
+    // for Histogram, to check image state
+    ImageState checkImageState(QString filename, QString baseDir);
+
+    // for MainWindow, to get list of current images
     QStringList getFiles() const;
-    hist_tuple* getHistogram(uint index) const { return histograms->at(index); }
-    QVector< hist_tuple* >* getHistograms() const { return histograms; }
+
+    image_record* getHistogram(uint index) const { return histograms->at(index); }
+
+    QVector< image_record* >* getHistograms() const { return histograms; }
+
+    void cleanHistogramList(QStringList* validDirs);
 };
 
 #endif // DB_H

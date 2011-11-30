@@ -14,6 +14,8 @@ Histogram::Histogram() :
 
 void Histogram::createCollection(DB* db, QStringList* dirs)
 {
+    db->cleanHistogramList(dirs);
+
     foreach(QString qs, *dirs)
     {
         // catalogue with psictures
@@ -31,68 +33,79 @@ void Histogram::createCollection(DB* db, QStringList* dirs)
 
         foreach (QFileInfo fi, fileInfo)
         {
-            uint* histogram;
-            histogram = (uint*) malloc (colorLevels * colorLevels *
-                                        colorLevels * sizeof(uint));
+            ImageState is = db->checkImageState(fi.fileName(), fi.absolutePath());
 
-            memset (histogram, 0, colorLevels * colorLevels *
-                    colorLevels * sizeof(uint));
-
-            QImage qi(fi.absoluteFilePath());
-            const uint height = qi.height();
-            const uint width = qi.width();
-
-            for (uint i = 0; i < height; i++)
+            // image not in DB
+            if (is == NOTINDB)
             {
-                for (uint j = 0; j < width; j++)
+                uint* histogram;
+                histogram = (uint*) malloc (colorLevels * colorLevels *
+                                            colorLevels * sizeof(uint));
+
+                memset (histogram, 0, colorLevels * colorLevels *
+                        colorLevels * sizeof(uint));
+
+                QImage qi(fi.absoluteFilePath());
+                const uint height = qi.height();
+                const uint width = qi.width();
+
+                for (uint i = 0; i < height; i++)
                 {
-                    // getting color from bitmap
-                    QRgb rgb = qi.pixel(j, i);
+                    for (uint j = 0; j < width; j++)
+                    {
+                        // getting color from bitmap
+                        QRgb rgb = qi.pixel(j, i);
 
-                    // for each color channel
-                    // getting color value
-                    uint r = qRed(rgb);
+                        // for each color channel
+                        // getting color value
+                        uint r = qRed(rgb);
 
-                    // scaling value to our representation
-                    // (for case, when there will be need for
-                    //  more / less colors)
-                    r /= (256 / colorLevels);
+                        // scaling value to our representation
+                        // (for case, when there will be need for
+                        //  more / less colors)
+                        r /= (256 / colorLevels);
 
-                    uint g = qGreen(rgb);
-                    g /= (256 / colorLevels);
+                        uint g = qGreen(rgb);
+                        g /= (256 / colorLevels);
 
-                    uint b = qBlue(rgb);
-                    b /= (256 / colorLevels);
+                        uint b = qBlue(rgb);
+                        b /= (256 / colorLevels);
 
-                    *(histogram +
-                      r * colorLevels * colorLevels +
-                      g * colorLevels +
-                      b) += 1;
+                        *(histogram +
+                          r * colorLevels * colorLevels +
+                          g * colorLevels +
+                          b) += 1;
+                    }
                 }
+                db->setRecord(fi.absolutePath(),
+                              fi.fileName(),
+                              histogram,
+                              colorLevels);
             }
-
-            // TODO: create optimised histogram and store in db
-            db->setRecord(fi.absolutePath(),
-                          fi.fileName(),
-                          histogram,
-                          colorLevels);
+            else if (is == INDB)
+            {
+                // get image from DB
+            }
         }
     }
 }
 
-bool sortHistTuples(const hist_tuple* s1, const hist_tuple* s2)
+// helper function for comparing histograms distances
+bool sortHistTuples(const image_record* s1, const image_record* s2)
 {
     return s1->distance < s2->distance;
 }
 
-QStringList Histogram::compareHistograms(hist_tuple* orig_hist,
-                                         QVector< hist_tuple* >* histograms,
+// comparing histograms using chosen method (child of AbstractHistComparer
+// and return list of most similar
+QVector< int > Histogram::compareHistograms(image_record* orig_hist,
+                                         QVector< image_record* >* histograms,
                                          AbstractHistComparer* comp)
 {
     // vector of filenames to return
-    QStringList ret;
+    QVector< int > ret;
 
-    foreach (hist_tuple* u, *histograms)
+    foreach (image_record* u, *histograms)
     {
         if (orig_hist != u)
         {
@@ -120,13 +133,13 @@ QStringList Histogram::compareHistograms(hist_tuple* orig_hist,
         }
     }
 
-    QVector< hist_tuple* >* histograms_copy = new QVector< hist_tuple* >(histograms->count());
+    QVector< image_record* >* histograms_copy = new QVector< image_record* >(histograms->count());
     qCopy(histograms->begin(), histograms->end(), histograms_copy->begin());
     qSort(histograms->begin(), histograms->end(), sortHistTuples);
 
     for (int i = 1; i < 6 && i < histograms->size(); i++)
-    {
-        ret << histograms->at(i)->filename;
+    {       
+        ret << histograms_copy->indexOf(histograms->at(i));
     }
 
     qCopy(histograms_copy->begin(), histograms_copy->end(), histograms->begin());

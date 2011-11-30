@@ -19,9 +19,9 @@ public:
 
     void doHistogram();
 
-    QStringList compareHistograms (hist_tuple* orig_hist,
-                                   QVector< hist_tuple* >* histograms,
-                                   AbstractHistComparer* comp);
+    QVector< int > compareHistograms (image_record* orig_hist,
+                                      QVector< image_record* >* histograms,
+                                      AbstractHistComparer* comp);
 };
 
 #endif // HISTOGRAM_H

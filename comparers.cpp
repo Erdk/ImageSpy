@@ -1,7 +1,7 @@
 #include "comparers.h"
 #include <cmath>
 
-uint ManhatanHistComparer::operator ()(hist_tuple* h1, hist_tuple* h2)
+uint ManhatanHistComparer::operator ()(image_record* h1, image_record* h2)
 {
     // Manhatan distance between two histograms
     // SUM(1, N, abs(h1(i) - h2(i))
@@ -24,7 +24,7 @@ uint ManhatanHistComparer::operator ()(hist_tuple* h1, hist_tuple* h2)
     return ret;
 }
 
-uint EuklidesHistComparer::operator ()(hist_tuple* h1, hist_tuple* h2)
+uint EuklidesHistComparer::operator ()(image_record* h1, image_record* h2)
 {
     uint ret = 0;
     uint dimm = h1->dimmension;
@@ -46,12 +46,12 @@ uint EuklidesHistComparer::operator ()(hist_tuple* h1, hist_tuple* h2)
     return ret;
 }
 
-uint CosinusHistComparer::operator ()(hist_tuple* h1, hist_tuple* h2)
+uint CosinusHistComparer::operator ()(image_record* h1, image_record* h2)
 {
     return 0;
 }
 
-uint CrossSectionHistComparer::operator ()(hist_tuple* h1, hist_tuple* h2)
+uint CrossSectionHistComparer::operator ()(image_record* h1, image_record* h2)
 {
     uint ret = 0;
     uint dimm = h1->dimmension;
@@ -73,7 +73,7 @@ uint CrossSectionHistComparer::operator ()(hist_tuple* h1, hist_tuple* h2)
     return 1 - ret;
 }
 
-uint NormCorrelationHistComparer::operator ()(hist_tuple* h1, hist_tuple* h2)
+uint NormCorrelationHistComparer::operator ()(image_record* h1, image_record* h2)
 {
     uint ret = 0;
     double up = 0.0;
