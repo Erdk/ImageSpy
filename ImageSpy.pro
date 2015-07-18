@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core sql widgets
 
 TARGET = ImageSpy
 TEMPLATE = app
@@ -13,20 +13,20 @@ TEMPLATE = app
 SOURCES  += main.cpp                    \
             mainwindow.cpp              \
             histogram.cpp               \
-            db.cpp \
-    comparers.cpp \
-    image_record.cpp
+            db.cpp                      \
+            comparers.cpp               \
+            image_record.cpp
 
 HEADERS  += mainwindow.h                \
             histogram.h                 \
             db.h                        \
-            comparers.h \
-    image_record.h
+            comparers.h                 \
+            image_record.h
 
 FORMS    += mainwindow.ui
 
 OTHER_FILES += \
-    README.txt
+            README.txt
 
 
 

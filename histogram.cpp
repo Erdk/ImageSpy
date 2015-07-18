@@ -100,7 +100,7 @@ bool sortImageRecords(const image_record* s1, const image_record* s2)
 // and return list of most similar
 QVector< int > Histogram::compareHistograms(image_record* orig_hist,
                                             QVector< image_record* >* histograms,
-                                            AbstractHistComparer* comp)
+                                            std::auto_ptr<AbstractHistComparer>& comp)
 {
     // vector of filenames to return
     QVector< int > ret;

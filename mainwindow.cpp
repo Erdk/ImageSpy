@@ -115,37 +115,36 @@ void MainWindow::on_searchButton_clicked()
     // 3. sort from smallest to greatest
     // 4. show top 5
 
-    AbstractHistComparer* ahc;
+    std::auto_ptr<AbstractHistComparer> ahc;
 
     switch(selected_method)
     {
-    case 0:
-        ahc = new ManhatanHistComparer();
-        break;
-    case  1:
-        ahc = new EuklidesHistComparer();
-        break;
-    case 2:
-        ahc = new CrossSectionHistComparer();
-        break;
-    case 3:
-        ahc = new NormCorrelationHistComparer();
-        break;
-    case 4:
-        ahc = new MediumLumaHistComparer();
-        break;
-    case 5:
-        ahc = new VarianceHistComparer();
-        break;
-    case 6:
-        ahc = new JeffreyHistComparer();
-        break;
-    case 7:
-        ahc = new KullbackHistComparer();
-        break;
-    case 8:
-        ahc = new ChiHistComparer();
-        break;
+        case 0:
+            ahc.reset(new ManhatanHistComparer());
+            break;
+        case  1:
+            ahc.reset(new EuklidesHistComparer());
+            break;
+        case 2:
+            ahc.reset(new CrossSectionHistComparer());
+            break;
+        case 3:
+            ahc.reset(new NormCorrelationHistComparer());
+            break;
+        case 4:
+            ahc.reset(new MediumLumaHistComparer());
+            break;
+        case 5:
+            ahc.reset(new VarianceHistComparer());
+            break;
+        case 6:
+            ahc.reset(new JeffreyHistComparer());
+            break;
+        case 7:
+            ahc.reset(new KullbackHistComparer());
+            break;
+        case 8:
+            ahc.reset(new ChiHistComparer());
     }
 
     QItemSelectionModel* qism = ui->pictureList->selectionModel();
@@ -174,8 +173,6 @@ void MainWindow::on_searchButton_clicked()
             delete m;
         }
     }
-
-    delete ahc;
 }
 
 void MainWindow::on_methodList_currentIndexChanged(int index)
