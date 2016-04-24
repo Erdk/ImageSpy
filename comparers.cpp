@@ -1,9 +1,8 @@
-#include "comparers.h"
+#include "comparers.hpp"
 #include <cmath>
 
 // ok
-uint ManhatanHistComparer::operator ()(image_record* h1, image_record* h2)
-{
+uint ManhatanHistComparer::operator ()(image_record* h1, image_record* h2) {
     // Manhatan distance between two histograms
     // SUM(1, N, abs(h1(i) - h2(i))
 
@@ -26,8 +25,7 @@ uint ManhatanHistComparer::operator ()(image_record* h1, image_record* h2)
 }
 
 //ok
-uint EuklidesHistComparer::operator ()(image_record* h1, image_record* h2)
-{
+uint EuklidesHistComparer::operator ()(image_record* h1, image_record* h2) {
     double ret = 0;
     uint dimm = h1->dimmension;
 
@@ -49,14 +47,12 @@ uint EuklidesHistComparer::operator ()(image_record* h1, image_record* h2)
 }
 
 // TODO
-uint CosinusHistComparer::operator ()(image_record* h1, image_record* h2)
-{
+uint CosinusHistComparer::operator ()(image_record* h1, image_record* h2) {
     return 0;
 }
 
 // ok
-uint CrossSectionHistComparer::operator ()(image_record* h1, image_record* h2)
-{
+uint CrossSectionHistComparer::operator ()(image_record* h1, image_record* h2) {
     uint ret = 0;
     uint dimm = h1->dimmension;
 
@@ -78,8 +74,7 @@ uint CrossSectionHistComparer::operator ()(image_record* h1, image_record* h2)
 }
 
 // ok
-uint NormCorrelationHistComparer::operator ()(image_record* h1, image_record* h2)
-{
+uint NormCorrelationHistComparer::operator ()(image_record* h1, image_record* h2) {
     uint ret = 0;
     double up = 0.0;
     double down = 0.0;
@@ -104,8 +99,7 @@ uint NormCorrelationHistComparer::operator ()(image_record* h1, image_record* h2
 }
 
 // ok
-uint MediumLumaHistComparer::operator ()(image_record* h1, image_record* h2)
-{
+uint MediumLumaHistComparer::operator ()(image_record* h1, image_record* h2) {
     double luma_h1 = 0.0;
     double norm_h1 = 0.0;
 
@@ -141,8 +135,7 @@ uint MediumLumaHistComparer::operator ()(image_record* h1, image_record* h2)
 }
 
 // TODO
-uint VarianceHistComparer::operator ()(image_record* h1, image_record* h2)
-{
+uint VarianceHistComparer::operator ()(image_record* h1, image_record* h2) {
     double luma_h1 = 0.0;
     double norm_h1 = 0.0;
 
@@ -178,8 +171,7 @@ uint VarianceHistComparer::operator ()(image_record* h1, image_record* h2)
 }
 
 // ok
-uint JeffreyHistComparer::operator ()(image_record* h1, image_record* h2)
-{
+uint JeffreyHistComparer::operator ()(image_record* h1, image_record* h2) {
     double ret = 0.0;
 
     for (uint i = 0; i < h1->dimmension * h1->dimmension * h1->dimmension; i++)
@@ -196,30 +188,24 @@ uint JeffreyHistComparer::operator ()(image_record* h1, image_record* h2)
 }
 
 // ok
-uint KullbackHistComparer::operator ()(image_record* h1, image_record* h2)
-{
+uint KullbackHistComparer::operator ()(image_record* h1, image_record* h2) {
     double ret = 0.0;
 
     for (uint i = 0; i < h1->dimmension * h1->dimmension * h1->dimmension; i++)
-    {
         if (h1->histogram[i] > 0 && h2->histogram[i] > 0)
             ret += (double)h1->histogram[i] * std::log((double)h1->histogram[i]) / ((double)h2->histogram[i]);
-    }
 
     return (uint)ret;
 }
 
-uint ChiHistComparer::operator ()(image_record* h1, image_record* h2)
-{
+uint ChiHistComparer::operator ()(image_record* h1, image_record* h2) {
     double ret = 0.0;
 
     for (uint i = 0; i < h1->dimmension * h1->dimmension * h1->dimmension; i++)
     {
         if (h1->histogram[i] + h2->histogram[i] > 0)
-        {
             ret += (std::pow((double)h1->histogram[i] - (double)h2->histogram[i], 2.0) /
                     ((double)h1->histogram[i] + (double)h2->histogram[i]));
-        }
     }
 
     return (uint)ret;

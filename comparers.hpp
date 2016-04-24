@@ -1,7 +1,7 @@
 #ifndef COMPARERS_H
 #define COMPARERS_H
 
-#include "image_record.h"
+#include "image_record.hpp"
 
 class AbstractHistComparer
 {

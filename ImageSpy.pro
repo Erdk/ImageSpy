@@ -13,40 +13,16 @@ TEMPLATE = app
 SOURCES  += main.cpp                    \
             mainwindow.cpp              \
             histogram.cpp               \
-            db.cpp                      \
-            comparers.cpp               \
-            image_record.cpp
+            img_db.cpp                  \
+            comparers.cpp
 
-HEADERS  += mainwindow.h                \
-            histogram.h                 \
-            db.h                        \
-            comparers.h                 \
-            image_record.h
+HEADERS  += mainwindow.hpp              \
+            histogram.hpp               \
+            img_db.hpp                  \
+            comparers.hpp               \
+            image_record.hpp
 
 FORMS    += mainwindow.ui
 
 OTHER_FILES += \
-            README.txt
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            README.md

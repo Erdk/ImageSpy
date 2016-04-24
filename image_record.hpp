@@ -26,8 +26,13 @@ struct image_record
         distance(dist)
     { }
 
-    void setVar(uint i, uint j, uint k, uint var);
-    uint getVar(uint i, uint j, uint k) const;
+    void setVar(uint i, uint j, uint k, uint var) {
+        *(histogram + i * dimmension * dimmension + j * dimmension + k) = var;
+    }
+
+    uint getVar(uint i, uint j, uint k) const {
+        return *(histogram + i * dimmension * dimmension + j * dimmension + k);
+    }
 };
 
 #endif // HIST_TUPLE_H

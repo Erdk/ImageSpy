@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 
 #include <QObject>
@@ -13,15 +13,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     hi(new Histogram),
     ui(new Ui::MainWindow),
-    selected_method(0)
-{
+    selected_method(0) {
     ui->setupUi(this);
-    try
-    {
-        db = new DB();
+    try {
+        db.reset(new ImgDB());
     }
-    catch (const char* ex)
-    {
+    catch (const char* ex) {
         this->~MainWindow();
 
         qDebug(ex);
@@ -36,23 +33,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->similarPreview->setScene(scenePreview);
 }
 
-MainWindow::~MainWindow()
-{
-    delete db;
-    delete hi;
+MainWindow::~MainWindow() {
     delete ui;
     delete scene;
     delete scenePreview;
 }
 
-void MainWindow::addDirectory()
-{
+void MainWindow::addDirectory() {
     QString fileName = QFileDialog::getExistingDirectory(this, "Wybierz katalog", QDir::homePath());
     ui->folderList->addItem(new QListWidgetItem(fileName));
 }
 
-void MainWindow::removeDirectory()
-{
+void MainWindow::removeDirectory() {
     qDeleteAll(ui->folderList->selectedItems());
     createCollection();
 
@@ -62,13 +54,10 @@ void MainWindow::removeDirectory()
     ui->similarPictureList->setModel(NULL);
 }
 
-void MainWindow::createCollection()
-{
+void MainWindow::createCollection() {
     QStringList list;
     for (int i = 0; i < ui->folderList->count(); i++)
-    {
         list << ui->folderList->item(i)->text();
-    }
 
     hi->createCollection(db, &list);
     QStringList files = db->getFiles();
@@ -79,8 +68,7 @@ void MainWindow::createCollection()
 }
 
 // action which show image in preview area
-void MainWindow::on_pictureList_clicked(const QModelIndex &index)
-{
+void MainWindow::on_pictureList_clicked(const QModelIndex &index) {
     image_record* ir = db->getHistogram(index.row());
     QString s = ir->basedir + "/" + ir->filename;
     s = QDir::toNativeSeparators(s);
@@ -96,8 +84,7 @@ void MainWindow::on_pictureList_clicked(const QModelIndex &index)
 // BUG: figure out hiding additional info in model and presenting it by
 // widget
 // for now: dirty hack
-void MainWindow::on_similarPictureList_clicked(const QModelIndex &index)
-{
+void MainWindow::on_similarPictureList_clicked(const QModelIndex &index) {
     QString s = QDir::toNativeSeparators(index.data().toString());
     QPixmap qpx = QPixmap(s).scaled(ui->similarPreview->size(), Qt::KeepAspectRatio);
 
@@ -107,8 +94,7 @@ void MainWindow::on_similarPictureList_clicked(const QModelIndex &index)
     ui->similarPreview->show();
 }
 
-void MainWindow::on_searchButton_clicked()
-{
+void MainWindow::on_searchButton_clicked() {
     // this method compares histograms and shows 5 most similar to our main image
     // 1. get selected image index -> histogram
     // 2. compare to other images histograms by method selected in combobox
@@ -117,8 +103,7 @@ void MainWindow::on_searchButton_clicked()
 
     std::auto_ptr<AbstractHistComparer> ahc;
 
-    switch(selected_method)
-    {
+    switch(selected_method) {
         case 0:
             ahc.reset(new ManhatanHistComparer());
             break;
@@ -150,18 +135,15 @@ void MainWindow::on_searchButton_clicked()
     QItemSelectionModel* qism = ui->pictureList->selectionModel();
     int row = qism->currentIndex().row();
 
-    if (row >= 0)
-    {
+    if (row >= 0) {
         QVector<int> r = hi->compareHistograms(db->getHistogram(row),
                                                db->getHistograms(),
                                                ahc);
         QStringList qsl;
-        for (int i = 0; i < r.count(); i++)
-        {
+        for (int i = 0; i < r.count(); i++) {
             image_record* ir = db->getHistogram(r.at(i));
             qsl << QString("%1/%2").arg(ir->basedir).arg(ir->filename);
         }
-
 
         QStringListModel* ret_model = new QStringListModel();
         ret_model->setStringList(qsl);
@@ -169,13 +151,10 @@ void MainWindow::on_searchButton_clicked()
         QItemSelectionModel *m = ui->similarPictureList->selectionModel();
         ui->similarPictureList->setModel(ret_model);
         if (m != NULL)
-        {
             delete m;
-        }
     }
 }
 
-void MainWindow::on_methodList_currentIndexChanged(int index)
-{
+void MainWindow::on_methodList_currentIndexChanged(int index) {
     selected_method = index;
 }

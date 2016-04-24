@@ -1,5 +1,5 @@
-#ifndef DB_H
-#define DB_H
+#ifndef IMG_DB_H
+#define IMG_DB_H
 
 #include <QString>
 #include <QVector>
@@ -7,9 +7,9 @@
 
 #include <QSqlDatabase>
 
-#include "image_record.h"
+#include "image_record.hpp"
 
-class DB
+class ImgDB
 {
 private:
     QSqlDatabase              db;
@@ -17,8 +17,8 @@ private:
     QVector< image_record* >* histograms;
 
 public:
-    DB();
-    ~DB();
+    ImgDB();
+    ~ImgDB();
 
     // for Histogram to access Images database
     void setRecord(QString baseDir, QString fileName, uint* table, uint dimmensions);
@@ -37,4 +37,4 @@ public:
     void cleanHistogramList(QStringList* validDirs);
 };
 
-#endif // DB_H
+#endif // IMG_DB_H

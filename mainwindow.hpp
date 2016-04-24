@@ -5,8 +5,10 @@
 #include <QMainWindow>
 #include <QModelIndex>
 
-#include "db.h"
-#include "histogram.h"
+#include <memory>
+
+#include "img_db.hpp"
+#include "histogram.hpp"
 
 namespace Ui {
     class MainWindow;
@@ -21,8 +23,8 @@ public:
     ~MainWindow();
 
 private:
-    DB*             db;
-    Histogram*      hi;
+    std::auto_ptr<ImgDB>          db;
+    std::auto_ptr<Histogram>      hi;
     QGraphicsScene* scene;
     QGraphicsScene* scenePreview;
     Ui::MainWindow* ui;

@@ -1,4 +1,4 @@
-#include "histogram.h"
+#include "histogram.hpp"
 
 #include <QDir>
 #include <QColor>
@@ -7,13 +7,9 @@
 
 #include <iostream>
 
-Histogram::Histogram() :
-    colorLevels(16)
-{
-}
+Histogram::Histogram() : colorLevels(16) { }
 
-void Histogram::createCollection(DB* db, QStringList* dirs)
-{
+void Histogram::createCollection(std::auto_ptr<ImgDB>& db, QStringList* dirs) {
     db->cleanHistogramList(dirs);
 
     foreach(QString qs, *dirs)
@@ -82,8 +78,7 @@ void Histogram::createCollection(DB* db, QStringList* dirs)
                               histogram,
                               colorLevels);
             }
-            else if (is == INDB)
-            {
+            else if (is == INDB) {
                 // get image from DB
             }
         }
@@ -91,8 +86,7 @@ void Histogram::createCollection(DB* db, QStringList* dirs)
 }
 
 // helper function for comparing histograms distances
-bool sortImageRecords(const image_record* s1, const image_record* s2)
-{
+bool sortImageRecords(const image_record* s1, const image_record* s2) {
     return s1->distance < s2->distance;
 }
 
@@ -100,31 +94,22 @@ bool sortImageRecords(const image_record* s1, const image_record* s2)
 // and return list of most similar
 QVector< int > Histogram::compareHistograms(image_record* orig_hist,
                                             QVector< image_record* >* histograms,
-                                            std::auto_ptr<AbstractHistComparer>& comp)
-{
+                                            std::auto_ptr<AbstractHistComparer>& comp) {
     // vector of filenames to return
     QVector< int > ret;
 
     foreach (image_record* u, *histograms)
-    {
         if (orig_hist != u)
-        {
             u->distance = (*comp)(orig_hist, u);
-        }
         else
-        {
             u->distance = 0;
-        }
-    }
 
     QVector< image_record* >* histograms_copy = new QVector< image_record* >(histograms->count());
     qCopy(histograms->begin(), histograms->end(), histograms_copy->begin());
     qSort(histograms->begin(), histograms->end(), sortImageRecords);
 
     for (int i = 0; i < 6 && i < histograms->size(); i++)
-    {       
         ret << histograms_copy->indexOf(histograms->at(i));
-    }
 
     qCopy(histograms_copy->begin(), histograms_copy->end(), histograms->begin());
     delete histograms_copy;
